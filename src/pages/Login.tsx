@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../store/authSlice";
 import { login } from "../api/auth";
+import { decodeJwt } from '../utils/jwt';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -18,14 +19,29 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const data = await login(email, password);
-            dispatch(loginSuccess(data.token));
-            setTimeout(() => {
-                window.location.reload();
-            }, 100);
+            const data: string = await login(email, password);
+            console.log("Token recebido da API:", data);
+
+            const decoded = decodeJwt(data);
+            if (decoded) {
+                console.log(decoded.roles);
+                dispatch(loginSuccess({
+                    token: data,
+                    decoded: {
+                        sub: decoded.sub,
+                        roles: decoded.roles
+                    }
+                }));
+            }
             navigate("/")
-        } catch (err: any) {
-            setError(err.message || "Erro ao fazer login");
+        } catch (err) {
+            if (typeof err === "string") {
+                setError(err);
+            } else if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("Ocorreu um erro desconhecido.");
+            }
         } finally {
             setLoading(false);
         }

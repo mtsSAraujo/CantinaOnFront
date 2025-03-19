@@ -2,15 +2,24 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api";
 
-const api = axios.create({
-    baseURL: API_URL,
-});
+const api = axios.create(
+    {
+        baseURL: API_URL,
+        withCredentials: true
+    }
+);
 
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+        const authData = localStorage.getItem("auth");
+        console.log("Auth Data" + authData);
+        if (authData) {
+            console.log(authData)
+            const token:string = JSON.parse(authData).token;
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+                console.log("[API] Requisição para:", config.url, "com token:", token ? "Sim" : "Não");
+            }
         }
         return config;
     },

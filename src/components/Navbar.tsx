@@ -5,7 +5,7 @@ import { RootState } from "../store/store";
 import { logout } from "../store/authSlice";
 
 const AppNavbar = () => {
-    const token = useSelector((state: RootState) => state.auth.token);
+    const { token, user } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -20,6 +20,12 @@ const AppNavbar = () => {
                 <Navbar.Brand as={Link} to="/">ManuManager</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="me-auto">
+                        {/* Link para Administradores */}
+                        {user?.roles?.includes("ROLE_ADMINISTRADOR") && (
+                            <Nav.Link as={Link} to="/users">Usuários</Nav.Link>
+                        )}
+                    </Nav>
                     <Nav className="ms-auto">
                         {token ? (
                             <Button variant="outline-light" onClick={handleLogout}>Logout</Button>
