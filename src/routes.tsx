@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Layout from "./components/Layout";
 import Users from "./pages/Users.tsx";
 import UserRegisterForm from "./components/UserRegisterForm.tsx";
+import UserEdit from "./pages/UserEdit.tsx";
 
 const AppRoutes = () => {
     return (
@@ -13,6 +14,7 @@ const AppRoutes = () => {
                 <Route path="/login" element={<Layout><Login /></Layout>} />
                 <Route path="/register" element={<Layout><UserRegisterForm /></Layout>} />
                 <Route path="/users" element={<Layout><Users /></Layout>}/>
+                <Route path="/users/:id" element={<Layout><UserEdit /></Layout>} />
             </Routes>
         </Router>
     );

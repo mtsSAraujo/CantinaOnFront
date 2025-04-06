@@ -1,11 +1,12 @@
-// pages/Users.tsx
 import { useEffect, useState } from 'react';
 import { Table, Button, Spinner, Alert, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { UserService } from '../services/userService'; // Caminho corrigido
+import { UserService } from '../services/userService';
 import { UsuarioResponseDto } from '../services/userService';
+import axios from "axios";
+import { handleApiError } from '../utils/handleApiError';
 
 const Users = () => {
     const navigate = useNavigate();
@@ -26,18 +27,14 @@ const Users = () => {
                 const usersData = await UserService.getUsers();
                 setUsers(usersData);
             } catch (err) {
-                if(typeof err === 'string') {
-                    setError(err);
-                } else {
-                    setError('Erro ao carregar usuários. Tente novamente mais tarde.');
-                }
+                setError(handleApiError(err));
             } finally {
                 setLoading(false);
             }
         };
 
         fetchUsers();
-    }, [navigate, token, user]); // Dependências corretas
+    }, [navigate, token, user]);
 
     if (loading) {
         return (
@@ -54,6 +51,31 @@ const Users = () => {
             </Container>
         );
     }
+
+    const handleEdit = (id: number) => {
+        navigate(`/users/${id}`);
+    };
+
+    const handleDelete = async (id: number) => {
+        const confirmDelete = window.confirm("Tem certeza que deseja excluir este usuário?");
+        if (!confirmDelete) return;
+
+        try {
+            setLoading(true);
+
+            await axios.delete(`http://localhost:8080/api/user/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            setUsers(prev => prev.filter(user => user.id !== id));
+        } catch (err: any) {
+            setError(handleApiError(err));
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Container className="mt-4">
@@ -79,10 +101,15 @@ const Users = () => {
                         <td>{usuario.tipoUsuario}</td>
                         <td>{usuario.status}</td>
                         <td>
-                            <Button variant="outline-primary" size="sm" className="me-2">
+                            <Button variant="outline-primary" size="sm" className="me-2"
+                                    onClick={() => handleEdit(usuario.id)}
+                            >
                                 Editar
                             </Button>
-                            <Button variant="outline-danger" size="sm">
+                            <Button
+                                variant="outline-danger" size="sm"
+                                onClick={() => handleDelete(usuario.id)}
+                            >
                                 Excluir
                             </Button>
                         </td>
