@@ -7,6 +7,7 @@ const UserRegister = () => {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [tipoUsuario, setTipoUsuario] = useState<"ADMINISTRADOR" | "TECNICO" | "CLIENTE">("CLIENTE");
+    const status = "DEFAULT"
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);

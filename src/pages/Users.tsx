@@ -69,7 +69,6 @@ const Users = () => {
                 },
             });
 
-            setUsers(prev => prev.filter(user => user.id !== id));
         } catch (err: any) {
             setError(handleApiError(err));
         } finally {

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {useSelector} from "react-redux";
 import {RootState} from "../store/store.ts";
+import {handleApiError} from "../utils/handleApiError.ts";
 
 const UserForm = () => {
     const { id } = useParams();
@@ -35,7 +36,7 @@ const UserForm = () => {
                 setTipoUsuario(data.tipoUsuario);
                 setStatus(data.status);
             } catch (err: any) {
-                setError("Erro ao carregar dados do usuário.");
+                setError(handleApiError(err));
             }
         };
 
@@ -59,11 +60,7 @@ const UserForm = () => {
             alert("Usuário atualizado com sucesso!");
             navigate("/users");
         } catch (err: any) {
-            if (err.response?.data?.message) {
-                setError(err.response.data.message);
-            } else {
-                setError("Erro ao atualizar o usuário.");
-            }
+            setError(handleApiError(err));
         } finally {
             setLoading(false);
         }
@@ -122,13 +119,14 @@ const UserForm = () => {
                         <option value="CLIENTE">Cliente</option>
                     </select>
                 </div>
-
                 <div className="mb-3">
-                    <label className="form-label">Status</label>
+                    <label className="form-label">Status do Usuário</label>
                     <select
                         className="form-select"
                         value={status}
-                        onChange={(e) => setStatus(e.target.value as "ATIVO" | "INATIVO")}
+                        onChange={(e) =>
+                            setStatus(e.target.value as "ATIVO" | "INATIVO" )
+                        }
                         required
                     >
                         <option value="ATIVO">Ativo</option>

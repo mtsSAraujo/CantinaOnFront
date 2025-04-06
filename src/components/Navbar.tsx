@@ -32,9 +32,9 @@ const AppNavbar = () => {
                         ) : (
                             <>
                                 <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                                <Nav.Link as={Link} to="/register">Registrar</Nav.Link>
                             </>
                         )}
+                        <Nav.Link as={Link} to="/register">Registrar</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
