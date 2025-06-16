@@ -6,7 +6,7 @@ const UserRegister = () => {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [tipoUsuario, setTipoUsuario] = useState<"ADMINISTRADOR" | "TECNICO" | "CLIENTE">("CLIENTE");
+    const [tipoUsuario, setTipoUsuario] = useState<"ADMINISTRADOR" | "CLIENTE">("CLIENTE");
     const status = "DEFAULT"
 
     const [error, setError] = useState("");
@@ -83,12 +83,11 @@ const UserRegister = () => {
                         className="form-select"
                         value={tipoUsuario}
                         onChange={(e) =>
-                            setTipoUsuario(e.target.value as "ADMINISTRADOR" | "TECNICO" | "CLIENTE")
+                            setTipoUsuario(e.target.value as "ADMINISTRADOR" | "CLIENTE")
                         }
                         required
                     >
                         <option value="ADMINISTRADOR">Administrador</option>
-                        <option value="TECNICO">Técnico</option>
                         <option value="CLIENTE">Cliente</option>
                     </select>
                 </div>

@@ -17,13 +17,15 @@ const AppNavbar = () => {
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
-                <Navbar.Brand as={Link} to="/">ManuManager</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">Cantina-On</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        {/* Link para Administradores */}
                         {user?.roles?.includes("ROLE_ADMINISTRADOR") && (
                             <Nav.Link as={Link} to="/users">Usuários</Nav.Link>
+                        )}
+                        {token && (
+                            <Nav.Link as={Link} to="/orders">Pedidos</Nav.Link>
                         )}
                     </Nav>
                     <Nav className="ms-auto">

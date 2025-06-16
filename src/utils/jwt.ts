@@ -1,7 +1,6 @@
 // utils/jwt.ts
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
-// Defina a estrutura do seu payload (personalize conforme seu token)
 export interface CustomJwtPayload extends JwtPayload {
     sub: string;
     roles: string[];

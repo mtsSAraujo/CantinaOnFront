@@ -24,7 +24,4 @@ export const UserService = {
             }
         }
     },
-
-    // Adicione outras funções conforme necessário
-    // createUser, updateUser, etc...
 };
